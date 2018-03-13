@@ -1,0 +1,13 @@
+﻿  Decode.cpp
+  dict.cpp
+  moc_segment.cpp
+  main.cpp
+  MyFunc.cpp
+  MyFunc.h
+  segment.cpp
+  Trie.cpp
+  正在生成代码...
+g:\segment\segment\myfunc.cpp(130): warning C4715: “MyFunc::MyReadLine”: 不是所有的控件路径都返回值
+  qrc_segment.cpp
+x64\Debug\MyFunc.obj : warning LNK4042: 对象被多次指定；已忽略多余的指定
+  segment.vcxproj -> G:\segment\x64\Debug\segment.exe

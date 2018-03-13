@@ -1,0 +1,42 @@
+#pragma once
+#include"Defination.h"
+
+struct TrieNode {
+	unordered_map <word, TrieNode* > childList;
+	bool  wordTag;  //是否可以以该结点作为单词结尾
+	int freq;       //词频
+	char prop[5];     //词性
+	TrieNode() { childList.clear(); wordTag = false; freq = 0; }
+};
+
+typedef struct WordInfo {
+	vector<word> vacab;      //单词
+	char prop[5];                 //词性
+	unsigned int freq = 0;        //词频
+	WordInfo() { int freq = 0; vacab.clear(); };
+}Info;                         //用于保存从字典中提取的信息
+
+struct DAGInfo {
+	int pos;
+	int freq;       //词频
+	char prop[5];     //词性
+};
+
+
+class Trie
+{
+public:
+	Trie();
+	~Trie();
+public:
+	bool InsertVacab(Info word);
+	bool DeletVacab(vector<word> vacab);
+	void DeletNode(TrieNode* &node);
+	WordInfo Search(vector<word> vacab);
+	vector<vector<DAGInfo>> SearchDAG(vector<word> sentence);
+	TrieNode * Getroot() { return this->root; }
+	int GetNum() { return this->numb; }
+
+	TrieNode * root = NULL;
+	int numb = 0;
+};
