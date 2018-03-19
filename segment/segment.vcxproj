@@ -117,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Decode.h" />
-    <ClInclude Include="Defination.h" />
     <ClInclude Include="dict.h" />
     <ClInclude Include="GeneratedFiles\ui_segment.h" />
     <ClInclude Include="SegCore.h" />

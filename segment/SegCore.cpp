@@ -234,8 +234,6 @@ int SegCore::MyReadLine(FILE* fp, wchar_t* &ws, Encode encoding) {
 			ws = tmpWStr;
 			return -1;
 		}
-		ws = tmpWStr;
-		return 0;
 	}
 	else if (encoding == UCS2_BE) {
 		tmpWStr = (wchar_t*)malloc(1024 * sizeof(wchar_t));
@@ -256,8 +254,6 @@ int SegCore::MyReadLine(FILE* fp, wchar_t* &ws, Encode encoding) {
 			ws = tmpWStr;
 			return -1;
 		}
-		ws = tmpWStr;
-		return 0;
 	}
 	else if ((encoding == UTF_8) || (encoding == UTF_8_BOM) || (encoding == ANSI)) {
 		char tmpStr[20480];
@@ -293,13 +289,13 @@ int SegCore::MyReadLine(FILE* fp, wchar_t* &ws, Encode encoding) {
 			ws = tmpWStr;
 			return -1;
 		}
-		ws = tmpWStr;
-		return 0;
 	}
+	ws = tmpWStr;
+	return 0;
 }
 
-vector<vector<word>> SegCore::MySplit(wchar_t *wstr, vector<wchar_t> &puncList) {
-	vector<vector<word>> wsList;
+vector<vector<unsigned short>> SegCore::MySplit(wchar_t *wstr, vector<wchar_t> &puncList) {
+	vector<vector<unsigned short>> wsList;
 	wchar_t tmpWStr[1024];
 	wsList.clear(); puncList.clear();
 	int wslen = wcslen(wstr), i, j;

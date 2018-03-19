@@ -1,8 +1,16 @@
 #pragma once
-#include"Defination.h"
+#include<string>
+#include<vector>
+#include<unordered_map>
+#include<iostream>
+#include<stdio.h>
+#include<direct.h>
+#include<windows.h>
+#include<assert.h>
 #include<vector>
 #include<windows.h>
 #include<assert.h>
+using namespace std;
 
 //±àÂë
 typedef int Encode;

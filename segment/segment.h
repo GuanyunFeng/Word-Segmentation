@@ -5,11 +5,12 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <QTextCodec>
-#include <qdebug.h>
-#include "Defination.h"
+#include<stdio.h>
+#include<assert.h>
 #include "Dict.h"
 #include "SegCore.h"
 #include "Decode.h"
+using namespace std;
 
 
 class segment : public QMainWindow
@@ -24,19 +25,26 @@ public:
 	public slots:
 	void ShowAbout();
 	void ShowHelp();
+	//
 	void BrowseFile();
 	void BrowseDict();
 	void SaveFile();
+	//
 	void CheckDictEncode();
 	void CheckFileEncode();
 	void SetDictEncode();
 	void SetFileEncode();
+	//
 	void Search();
 	void Add();
 	void Del();
+	//
 	void DisplayDict();
 	void LoadDict();
+	void SetDict();
+	//
 	void Run();
+	//
 	void RunTest();
 	void ClearText();
 	

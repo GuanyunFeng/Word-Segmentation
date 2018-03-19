@@ -34,6 +34,7 @@ segment::segment(QWidget *parent)
 	connect(ui.action_8, SIGNAL(triggered()), this, SLOT(DisplayDict()));
 	connect(ui.pushButton_runTest, SIGNAL(clicked()), this, SLOT(RunTest()));
 	connect(ui.pushButton_cls, SIGNAL(clicked()), this, SLOT(ClearText()));
+	connect(ui.comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(SetDict()));
 	this->dict = new Dict();
 	char* curDirectory = (char*)malloc(80 * sizeof(char));
 	curDirectory = _getcwd(curDirectory, 80 * sizeof(char));
@@ -88,6 +89,7 @@ void segment::SaveFile() {
 }
 
 void segment::CheckDictEncode() {
+	if (ui.lineEdit_Dict->text().isEmpty()) return;
 	Encode encoding = UNKNOWN;
 	if (ui.comboBox_Dict->currentIndex() == 0) {
 		encoding = Decode::CheckEncode(ui.lineEdit_Dict->text().toLatin1().data());
@@ -155,6 +157,7 @@ void segment::CheckDictEncode() {
 }
 
 void segment::CheckFileEncode() {
+	if (ui.lineEdit_Input->text().isEmpty()) return;
 	Encode encoding = UNKNOWN;
 	if (ui.comboBox_Input->currentIndex() == 0) {
 		encoding = Decode::CheckEncode(ui.lineEdit_Input->text().toLatin1().data());
@@ -530,7 +533,7 @@ void segment::RunTest() {
 	QString tmpStr = ui.textEdit_input->toPlainText();
 	tmpStr.toWCharArray(ws);
 	vector<wchar_t> puncs;
-	vector<vector<word>> wsList = SegCore::MySplit(ws, puncs);
+	vector<vector<unsigned short>> wsList = SegCore::MySplit(ws, puncs);
 	for (unsigned i = 0; i < wsList.size();i++) {
 		SegCore::Seg(wsList[i], this->dict, ws);
 		tmpStr = QString::fromWCharArray(ws);
@@ -550,10 +553,10 @@ void segment::ReadFile() {
 	wchar_t *line = NULL, ws[1024];
 	char tmpStr[5];
 	vector<wchar_t> puncs;
-	vector<word> tmpWs;
+	vector<unsigned short> tmpWs;
 	tmpWs.clear();
 	while (SegCore::MyReadLine(Infile, line, this->in_encode) != -1) {
-		vector<vector<word>> wsList = SegCore::MySplit(line, puncs);
+		vector<vector<unsigned short>> wsList = SegCore::MySplit(line, puncs);
 		if (wsList.size() > 0) {
 			if (!tmpWs.empty())
 				wsList[0].insert(wsList[0].begin(), tmpWs.begin(), tmpWs.end());
@@ -595,4 +598,28 @@ void segment::ReadFile() {
 	fclose(Infile);
 	fclose(Outfile);
 	return;
+}
+
+void segment::SetDict() {
+	if (ui.comboBox_3->currentIndex() == 0) {
+		char* curDirectory = (char*)malloc(80 * sizeof(char));
+		curDirectory = _getcwd(curDirectory, 80 * sizeof(char));
+		strcat(curDirectory, "\\dict");
+		wchar_t *ws = Decode::AnsiToUnicode(curDirectory);
+		ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
+	}
+	else if (ui.comboBox_3->currentIndex() == 1) {
+		char* curDirectory = (char*)malloc(80 * sizeof(char));
+		curDirectory = _getcwd(curDirectory, 80 * sizeof(char));
+		strcat(curDirectory, "\\dict.small");
+		wchar_t *ws = Decode::AnsiToUnicode(curDirectory);
+		ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
+	}
+	else {
+		char* curDirectory = (char*)malloc(80 * sizeof(char));
+		curDirectory = _getcwd(curDirectory, 80 * sizeof(char));
+		strcat(curDirectory, "\\dict.big");
+		wchar_t *ws = Decode::AnsiToUnicode(curDirectory);
+		ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
+	}
 }

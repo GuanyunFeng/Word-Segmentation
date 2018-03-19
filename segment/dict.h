@@ -1,7 +1,14 @@
 #pragma once
-#include"Defination.h"
 #include"Trie.h"
 #include"Decode.h"
+#include<string>
+#include<vector>
+#include<iostream>
+#include<stdio.h>
+#include<direct.h>
+#include<windows.h>
+#include<assert.h>
+using namespace std;
 
 class Dict{
 public:
@@ -18,8 +25,8 @@ public:
 	bool SetEncode(Encode encding);
 	bool IsLoaded() { return this->loaded; }
 	void SetUnloaded() { this->loaded = false; }
-	static vector<word> ToUnicode(string str, Encode encoding);
-	static string ToString(vector<word> vacab, Encode encoding);
+	static vector<unsigned short> ToUnicode(string str, Encode encoding);
+	static string ToString(vector<unsigned short> vacab, Encode encoding);
 	Encode dictEncode = UNKNOWN;
 
 	Trie tree;

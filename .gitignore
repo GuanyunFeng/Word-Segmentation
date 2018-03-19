@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.ipch
+.vs/segment/v15/Browse.VC.db
+*.suo
+*.obj
+*.tlog

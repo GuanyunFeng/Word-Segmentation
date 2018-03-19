@@ -1,9 +1,10 @@
 #pragma once
-#include<vector>
+#include <string>
+#include <vector>
+#include <stdio.h>
 #include "Decode.h"
-#include "Trie.h"
 #include "dict.h"
-#include"Defination.h"
+using namespace std;
 
 class SegCore
 {
@@ -15,7 +16,7 @@ public:
 	static FILE * Myfopen(char * path, const char* mode, Encode encoding);
 	static FILE * Myfopen(const char *path, const char * mode, Encode encoding);
 	static int MyReadLine(FILE* fp, wchar_t* &ws, Encode encoding);
-	static vector<vector<word>> MySplit(wchar_t *wstr, vector<wchar_t> &puncList);
+	static vector<vector<unsigned short>> MySplit(wchar_t *wstr, vector<wchar_t> &puncList);
 
 };
 

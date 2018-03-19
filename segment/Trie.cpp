@@ -18,7 +18,7 @@ bool Trie::InsertVacab(Info info) {
 	TrieNode *pTmp = this->root;
 	for (unsigned int i = 0; i < info.vacab.size(); i++) {
 		assert(pTmp);
-		unordered_map<word, TrieNode*>::iterator ite = pTmp->childList.find(info.vacab[i]);
+		unordered_map<unsigned short, TrieNode*>::iterator ite = pTmp->childList.find(info.vacab[i]);
 		if (ite == pTmp->childList.end()) {
 			TrieNode *tmpNode = new TrieNode();
 			if (!tmpNode) return false;
@@ -46,11 +46,11 @@ bool Trie::InsertVacab(Info info) {
 
 
 //把某一个单词从Tire树中删除，vacab是单词
-bool Trie::DeletVacab(vector<word> vacab) {
+bool Trie::DeletVacab(vector<unsigned short> vacab) {
 	TrieNode *pTmp = this->root, *pTmp3 = pTmp;
-	word tmpWord = vacab[0];
+	unsigned short tmpWord = vacab[0];
 	for (unsigned int i = 0; i < vacab.size(); i++) {
-		unordered_map<word, TrieNode*>::iterator it = pTmp->childList.find(vacab[i]);
+		unordered_map<unsigned short, TrieNode*>::iterator it = pTmp->childList.find(vacab[i]);
 		if (it == pTmp->childList.end()) return false;
 		if (pTmp->wordTag) {
 			pTmp3 = pTmp;
@@ -85,7 +85,7 @@ void Trie::DeletNode(TrieNode* &node) {
 	}
 	//非叶节点
 	else {
-		unordered_map<word, TrieNode*>::iterator it = node->childList.begin();
+		unordered_map<unsigned short, TrieNode*>::iterator it = node->childList.begin();
 		for (; it != node->childList.end(); it++)
 			this->DeletNode(it->second);
 	}
@@ -93,12 +93,12 @@ void Trie::DeletNode(TrieNode* &node) {
 
 
 //在加载的Trie树中查找单词str
-WordInfo Trie::Search(vector<word> vacab) {
+WordInfo Trie::Search(vector<unsigned short> vacab) {
 	Info info;
 	TrieNode* pTmp = this->root;
 	if (!pTmp) return info; //info.freq == 0可作为是否正确找到单词的判断依据
 	for (unsigned int i = 0; i < vacab.size(); i++) {
-		unordered_map<word, TrieNode*>::iterator it = pTmp->childList.find(vacab[i]);
+		unordered_map<unsigned short, TrieNode*>::iterator it = pTmp->childList.find(vacab[i]);
 		//如果Trie树中没有该单词
 		if (it == pTmp->childList.end()) return info;
 		pTmp = pTmp->childList[vacab[i]];
@@ -114,7 +114,7 @@ WordInfo Trie::Search(vector<word> vacab) {
 	}
 }
 
-vector<vector<DAGInfo>> Trie::SearchDAG(vector<word> sentence)
+vector<vector<DAGInfo>> Trie::SearchDAG(vector<unsigned short> sentence)
 {
 	vector<vector<DAGInfo>> dag;
 	vector<DAGInfo> tmp;
@@ -126,7 +126,7 @@ vector<vector<DAGInfo>> Trie::SearchDAG(vector<word> sentence)
 		pTmp = this->root;
 		tmp.clear();
 		for (unsigned j = i; j < sentence.size(); j++) {
-			unordered_map<word, TrieNode*>::iterator it = pTmp->childList.find(sentence[j]);
+			unordered_map<unsigned short, TrieNode*>::iterator it = pTmp->childList.find(sentence[j]);
 			if (it == pTmp->childList.end()) break;
 			else if (it->second->wordTag) {
 				tmpInfo.freq = it->second->freq;

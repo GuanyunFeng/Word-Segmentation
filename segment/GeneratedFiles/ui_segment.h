@@ -68,18 +68,19 @@ public:
     QLabel *label_dict;
     QSpacerItem *horizontalSpacer_5;
     QGroupBox *groupBox_3;
-    QWidget *layoutWidget_2;
-    QVBoxLayout *verticalLayout_9;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_19;
     QLabel *label_33;
     QLineEdit *lineEdit_Output;
     QPushButton *OutBrowser;
-    QHBoxLayout *horizontalLayout_20;
-    QSpacerItem *horizontalSpacer_21;
+    QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer_6;
+    QSpacerItem *horizontalSpacer_3;
     QSpacerItem *horizontalSpacer_22;
     QLabel *label_35;
     QLabel *label_output;
-    QSpacerItem *horizontalSpacer_23;
+    QSpacerItem *horizontalSpacer_2;
     QPushButton *pushButton_10;
     QGroupBox *groupBox_2;
     QWidget *layoutWidget_4;
@@ -161,7 +162,7 @@ public:
     {
         if (segmentClass->objectName().isEmpty())
             segmentClass->setObjectName(QStringLiteral("segmentClass"));
-        segmentClass->resize(649, 509);
+        segmentClass->resize(649, 472);
         action_help = new QAction(segmentClass);
         action_help->setObjectName(QStringLiteral("action_help"));
         action_about = new QAction(segmentClass);
@@ -267,63 +268,67 @@ public:
         groupBox_3 = new QGroupBox(tab);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setGeometry(QRect(20, 220, 581, 91));
-        layoutWidget_2 = new QWidget(groupBox_3);
-        layoutWidget_2->setObjectName(QStringLiteral("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(20, 20, 541, 77));
-        verticalLayout_9 = new QVBoxLayout(layoutWidget_2);
-        verticalLayout_9->setSpacing(6);
-        verticalLayout_9->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
-        verticalLayout_9->setContentsMargins(0, 0, 0, 0);
+        widget = new QWidget(groupBox_3);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(21, 21, 541, 55));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_19 = new QHBoxLayout();
         horizontalLayout_19->setSpacing(6);
         horizontalLayout_19->setObjectName(QStringLiteral("horizontalLayout_19"));
-        label_33 = new QLabel(layoutWidget_2);
+        label_33 = new QLabel(widget);
         label_33->setObjectName(QStringLiteral("label_33"));
         label_33->setStyleSheet(QString::fromUtf8("font: 25 12pt \"Adobe \345\256\213\344\275\223 Std L\";"));
 
         horizontalLayout_19->addWidget(label_33);
 
-        lineEdit_Output = new QLineEdit(layoutWidget_2);
+        lineEdit_Output = new QLineEdit(widget);
         lineEdit_Output->setObjectName(QStringLiteral("lineEdit_Output"));
 
         horizontalLayout_19->addWidget(lineEdit_Output);
 
-        OutBrowser = new QPushButton(layoutWidget_2);
+        OutBrowser = new QPushButton(widget);
         OutBrowser->setObjectName(QStringLiteral("OutBrowser"));
 
         horizontalLayout_19->addWidget(OutBrowser);
 
 
-        verticalLayout_9->addLayout(horizontalLayout_19);
+        verticalLayout->addLayout(horizontalLayout_19);
 
-        horizontalLayout_20 = new QHBoxLayout();
-        horizontalLayout_20->setSpacing(6);
-        horizontalLayout_20->setObjectName(QStringLiteral("horizontalLayout_20"));
-        horizontalSpacer_21 = new QSpacerItem(78, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_20->addItem(horizontalSpacer_21);
+        horizontalLayout_2->addItem(horizontalSpacer_6);
 
-        horizontalSpacer_22 = new QSpacerItem(58, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_20->addItem(horizontalSpacer_22);
+        horizontalLayout_2->addItem(horizontalSpacer_3);
 
-        label_35 = new QLabel(layoutWidget_2);
+        horizontalSpacer_22 = new QSpacerItem(68, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_22);
+
+        label_35 = new QLabel(widget);
         label_35->setObjectName(QStringLiteral("label_35"));
 
-        horizontalLayout_20->addWidget(label_35);
+        horizontalLayout_2->addWidget(label_35);
 
-        label_output = new QLabel(layoutWidget_2);
+        label_output = new QLabel(widget);
         label_output->setObjectName(QStringLiteral("label_output"));
 
-        horizontalLayout_20->addWidget(label_output);
+        horizontalLayout_2->addWidget(label_output);
 
-        horizontalSpacer_23 = new QSpacerItem(28, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(28, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_20->addItem(horizontalSpacer_23);
+        horizontalLayout_2->addItem(horizontalSpacer_2);
 
 
-        verticalLayout_9->addLayout(horizontalLayout_20);
+        verticalLayout->addLayout(horizontalLayout_2);
 
         pushButton_10 = new QPushButton(tab);
         pushButton_10->setObjectName(QStringLiteral("pushButton_10"));
@@ -595,7 +600,7 @@ public:
         segmentClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(segmentClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 649, 30));
+        menuBar->setGeometry(QRect(0, 0, 649, 23));
         menu_F = new QMenu(menuBar);
         menu_F->setObjectName(QStringLiteral("menu_F"));
         menu_H = new QMenu(menuBar);
@@ -628,7 +633,7 @@ public:
 
         retranslateUi(segmentClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(segmentClass);

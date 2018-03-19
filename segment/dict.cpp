@@ -46,8 +46,8 @@ Info Dict::ReadVacab(FILE* fp, Encode encoding) {
 		int i = 0, j = 1;
 		while (fread(tmp, 1, 2, fp) > 0) {
 			if (tmp[0] == 0 && tmp[1] == 0x20) break;
-			word high = tmp[0] & 0x00ff;;
-			word low = tmp[1] & 0x00ff;;
+			unsigned short high = tmp[0] & 0x00ff;;
+			unsigned short low = tmp[1] & 0x00ff;;
 			info.vacab.push_back((high << 8) | low);
 		}
 		while (fread(tmp, 1, 2, fp) > 0) {
@@ -70,8 +70,8 @@ Info Dict::ReadVacab(FILE* fp, Encode encoding) {
 		int i = 0, j = 1;
 		while (fread(tmp, 1, 2, fp) > 0) {
 			if (tmp[0] == 0 && tmp[1] == 0x20) break;
-			word high = tmp[1] & 0x00ff;;
-			word low = tmp[0] & 0x00ff;;
+			unsigned short high = tmp[1] & 0x00ff;;
+			unsigned short low = tmp[0] & 0x00ff;;
 			info.vacab.push_back((high << 8) | low);
 		}
 		while (fread(tmp, 1, 2, fp) > 0) {
@@ -126,7 +126,7 @@ bool Dict::AddVacab(Info info){
 
 //在Trie树中删除单词，并做标记。在保存的时候对字典进行修改。
 bool Dict::DelVacab(string str, Encode encoding) {
-	vector<word> v1 = Dict::ToUnicode(str, encoding);
+	vector<unsigned short> v1 = Dict::ToUnicode(str, encoding);
 	if (!v1.size()) return false;
 	if (!tree.DeletVacab(v1)) return false;
 	this->deleted.push_back(str);
@@ -170,7 +170,7 @@ bool Dict::SaveChange() {
 
 //查找单词，返回Info信息。未找到则Info.freq=0。
 Info Dict::SearchDict(string str, Encode encoding){
-	vector<word> vacab = Dict::ToUnicode(str, encoding);
+	vector<unsigned short> vacab = Dict::ToUnicode(str, encoding);
 	return this->tree.Search(vacab);
 }
 
@@ -184,8 +184,8 @@ bool Dict::SetEncode(Encode encoding){
 }
 
 //把字符串转成Unicode编码，存储在vector中返回
-vector<word> Dict::ToUnicode(string str, Encode encoding) {
-	vector<word> tmpUnico;
+vector<unsigned short> Dict::ToUnicode(string str, Encode encoding) {
+	vector<unsigned short> tmpUnico;
 	tmpUnico.clear();
 
 	//字符串为UTF-8编码
@@ -195,16 +195,16 @@ vector<word> Dict::ToUnicode(string str, Encode encoding) {
 			if (!(str[i] & 0x80)) tmpUnico.push_back(str[i++]);
 			//第一个字节形式为0x110*****,那么UTF8编码占2字节
 			else if ((byte)str[i] < 0xDF && i + 1 < str.size()) {
-				word tmpL = (str[i] & 0x1F); tmpL = tmpL << 6;
-				word tmpR = str[i + 1] & 0x3F;
+				unsigned short tmpL = (str[i] & 0x1F); tmpL = tmpL << 6;
+				unsigned short tmpR = str[i + 1] & 0x3F;
 				tmpUnico.push_back(tmpL | tmpR);
 				i += 2;
 			}
 			//第一个字节形式为0x1110****,那么UTF8编码占3个字节
 			else if ((byte)str[i] < 0xEF && i + 2 < str.size()) {
-				word tmpL = (str[i] & 0x0F); tmpL = tmpL << 12;
-				word tmpM = (str[i + 1] & 0x3F); tmpM = tmpM << 6;
-				word tmpR = str[i + 2] & 0x3F;
+				unsigned short tmpL = (str[i] & 0x0F); tmpL = tmpL << 12;
+				unsigned short tmpM = (str[i + 1] & 0x3F); tmpM = tmpM << 6;
+				unsigned short tmpR = str[i + 2] & 0x3F;
 				tmpUnico.push_back(tmpL | tmpM | tmpR);
 				i += 3;
 			}
@@ -219,9 +219,9 @@ vector<word> Dict::ToUnicode(string str, Encode encoding) {
 	//字符串为Unicode_little_endian编码
 	if (encoding == UNICODE_LITTLE_ENDIAN) {
 		for (unsigned i = 0; i < str.size(); i += 2) {
-			word high = str[i + 1];
+			unsigned short high = str[i + 1];
 			high = (high & 0x00FF) << 8;
-			word low = str[i];
+			unsigned short low = str[i];
 			low = low & 0x00FF;
 			tmpUnico.push_back(high | low);
 		}
@@ -230,9 +230,9 @@ vector<word> Dict::ToUnicode(string str, Encode encoding) {
 	//字符串为Unicode_big_endian编码
 	if (encoding == UNICODE_BIG_ENDIAN) {
 		for (unsigned i = 0; i < str.size(); i += 2) {
-			word high = str[i];
+			unsigned short high = str[i];
 			high = (high & 0x00FF) << 8;
-			word low = str[i + 1];
+			unsigned short low = str[i + 1];
 			low = low & 0x00FF;
 			tmpUnico.push_back(high | low);
 		}
@@ -247,7 +247,7 @@ vector<word> Dict::ToUnicode(string str, Encode encoding) {
 
 
 //把vector中存储的词转换成相应编码的字符串返回
-string Dict::ToString(vector<word> vacab, Encode encoding){
+string Dict::ToString(vector<unsigned short> vacab, Encode encoding){
 	string str;
 	char tmpStr[20];
 
