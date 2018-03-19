@@ -535,7 +535,7 @@ void segment::RunTest() {
 	vector<wchar_t> puncs;
 	vector<vector<unsigned short>> wsList = SegCore::MySplit(ws, puncs);
 	for (unsigned i = 0; i < wsList.size();i++) {
-		SegCore::Seg(wsList[i], this->dict, ws);
+		SegCore::MMSeg(wsList[i], this->dict, ws);
 		tmpStr = QString::fromWCharArray(ws);
 		ui.textEdit_out->append(tmpStr);
 	}
@@ -563,7 +563,7 @@ void segment::ReadFile() {
 			if (puncs.size() < wsList.size()) {
 				for (unsigned i = 0; i < wsList.size() - 1; i++) {
 					//segment::Cut(wsList[i], Outfile);
-					SegCore::Seg(wsList[i], this->dict, ws);
+					SegCore::MMSeg(wsList[i], this->dict, ws);
 					fwrite(ws, 2, wcslen(ws), Outfile);
 					tmpStr[0] = (char)(puncs[i] & 0x00ff);
 					tmpStr[1] = (char)((puncs[i] >> 8) & 0x00ff);
@@ -577,7 +577,7 @@ void segment::ReadFile() {
 			}
 			else {
 				for (unsigned i = 0; i < wsList.size() - 1; i++) {
-					SegCore::Seg(wsList[i], this->dict, ws);
+					SegCore::MMSeg(wsList[i], this->dict, ws);
 					fwrite(ws, 2, wcslen(ws), Outfile);
 					tmpStr[0] = (char)(puncs[i] & 0x00ff);
 					tmpStr[1] = (char)((puncs[i] >> 8) & 0x00ff);

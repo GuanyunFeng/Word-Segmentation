@@ -11,7 +11,10 @@ class SegCore
 public:
 	SegCore();
 	~SegCore();
-	static void Seg(vector<unsigned short> sentence,Dict *dict, wchar_t* ws);
+	static void MMSeg(vector<unsigned short> sentence,Dict *dict, wchar_t* ws);
+	static void MPSeg(vector<unsigned short> sentence, Dict *dict, wchar_t* ws);
+	static void MaxSeg(vector<unsigned short> sentence, Dict *dict, wchar_t* ws);
+	static double CalcPoss(vector<vector<DAGInfo>> dag, int i);
 
 	static FILE * Myfopen(char * path, const char* mode, Encode encoding);
 	static FILE * Myfopen(const char *path, const char * mode, Encode encoding);

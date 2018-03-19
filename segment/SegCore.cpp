@@ -11,7 +11,7 @@ SegCore::~SegCore()
 {
 }
 
-void SegCore::Seg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
+void SegCore::MMSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
 	unsigned i, j, k, p, q, next, current, n = 0;
 	int count = 0;
 	unsigned maxlen = 0, numb = 3;
@@ -163,6 +163,48 @@ void SegCore::Seg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
 		}
 	CONTINUE:
 		for (p = 0; p < routs[0][0]; p++)
+			ws[count++] = sentence[i++];
+		ws[count++] = '/';
+		ws[count] = '\0';
+	}
+}
+
+void SegCore::MPSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
+	int maxPossi = 0;
+	vector<vector<DAGInfo>> dag;
+	unsigned rout[1024];
+	dag.clear();
+	dag = dict->tree.SearchDAG(sentence);
+
+}
+
+double SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i) {
+	if (i == dag.size() - 1) return log(dag[i][0].freq);
+	else {
+		for (int j = 0; j < dag[i].size(); j++) {
+			if (dag[i][j].pos == dag.size() - 1)
+				return log(dag[i][j].freq);
+			else {
+				return log(dag[i][j].freq + CalcPoss(dag, dag[i][j].pos + 1));
+			}
+		}
+	}
+}
+
+void SegCore::MaxSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
+	unsigned i = 0, j = 0, maxpos = 0, count = 0;
+	vector<vector<DAGInfo>> dag;
+	unsigned routs[1024][3];
+	unsigned rout[3];
+	dag.clear();
+	dag = dict->tree.SearchDAG(sentence);
+	for (i = 0; i < dag.size();) {
+		maxpos = 0;
+		for (j = 0; j < dag[i].size(); j++) {
+			if (dag[i][j].pos - i > maxpos)
+				maxpos = dag[i][j].pos;
+		}
+		while (i <= maxpos)
 			ws[count++] = sentence[i++];
 		ws[count++] = '/';
 		ws[count] = '\0';
