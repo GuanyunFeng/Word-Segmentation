@@ -87,8 +87,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyFunc.cpp" />
-    <ClCompile Include="MyFunc.h" />
+    <ClCompile Include="SegCore.cpp" />
     <ClCompile Include="segment.cpp" />
     <ClCompile Include="Trie.cpp" />
   </ItemGroup>
@@ -121,6 +120,7 @@
     <ClInclude Include="Defination.h" />
     <ClInclude Include="dict.h" />
     <ClInclude Include="GeneratedFiles\ui_segment.h" />
+    <ClInclude Include="SegCore.h" />
     <ClInclude Include="Trie.h" />
   </ItemGroup>
   <ItemGroup>

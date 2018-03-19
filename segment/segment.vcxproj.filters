@@ -45,9 +45,6 @@
     <ClCompile Include="GeneratedFiles\qrc_segment.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyFunc.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Decode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,7 +54,7 @@
     <ClCompile Include="Trie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyFunc.cpp">
+    <ClCompile Include="SegCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,6 +83,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Decode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SegCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

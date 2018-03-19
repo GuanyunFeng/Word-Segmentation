@@ -8,7 +8,7 @@
 #include <qdebug.h>
 #include "Defination.h"
 #include "Dict.h"
-#include "MyFunc.h"
+#include "SegCore.h"
 #include "Decode.h"
 
 
@@ -20,8 +20,6 @@ public:
 	segment(QWidget *parent = Q_NULLPTR);
 	~segment();
 	void ReadFile();
-	void Cut(vector<word> sentence, FILE* Outfile);
-	QString CutTest(vector<word> sentence);
 
 	public slots:
 	void ShowAbout();
@@ -33,13 +31,12 @@ public:
 	void CheckFileEncode();
 	void SetDictEncode();
 	void SetFileEncode();
-	void SetOutputEncode();
-	void Run();
 	void Search();
 	void Add();
 	void Del();
 	void DisplayDict();
 	void LoadDict();
+	void Run();
 	void RunTest();
 	void ClearText();
 	
@@ -48,7 +45,4 @@ private:
 	Dict *dict;
 	Encode dict_encode = UNKNOWN;
 	Encode in_encode = UNKNOWN;
-	Encode out_encode = UCS2_LE;
-	vector<vector<unsigned>> dag;
-	vector<unsigned> rout;
 };

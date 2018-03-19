@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>649</width>
-    <height>485</height>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -42,7 +42,7 @@
            <x>20</x>
            <y>20</y>
            <width>541</width>
-           <height>66</height>
+           <height>77</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -192,7 +192,7 @@
            <x>20</x>
            <y>20</y>
            <width>541</width>
-           <height>66</height>
+           <height>77</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -236,30 +236,6 @@
              </spacer>
             </item>
             <item>
-             <widget class="QLabel" name="label_34">
-              <property name="text">
-               <string>选择编码方式：</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBox_10">
-              <property name="styleSheet">
-               <string notr="true">font: 10pt &quot;Times New Roman&quot;;</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>UCS2_LE</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>UCS2_BE</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer_22">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -275,7 +251,7 @@
             <item>
              <widget class="QLabel" name="label_35">
               <property name="text">
-               <string>当前解码方式：</string>
+               <string>编码方式：</string>
               </property>
              </widget>
             </item>
@@ -338,7 +314,7 @@
            <x>20</x>
            <y>20</y>
            <width>541</width>
-           <height>66</height>
+           <height>77</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -927,7 +903,7 @@ color: rgb(0, 0, 255);</string>
           <rect>
            <x>70</x>
            <y>40</y>
-           <width>175</width>
+           <width>206</width>
            <height>28</height>
           </rect>
          </property>
@@ -1166,7 +1142,7 @@ color: rgb(0, 0, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>649</width>
-     <height>23</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">

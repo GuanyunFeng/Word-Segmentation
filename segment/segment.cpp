@@ -20,7 +20,6 @@ segment::segment(QWidget *parent)
 	connect(ui.lineEdit_Input, SIGNAL(textChanged(const QString &)), this, SLOT(CheckFileEncode()));
 	connect(ui.comboBox_Dict, SIGNAL(currentIndexChanged(int)), this, SLOT(SetDictEncode()));
 	connect(ui.comboBox_Input, SIGNAL(currentIndexChanged(int)), this, SLOT(SetFileEncode()));
-	connect(ui.comboBox_10, SIGNAL(currentIndexChanged(int)), this, SLOT(SetOutputEncode()));
 	connect(ui.pushButton_10, SIGNAL(clicked()), this, SLOT(Run()));
 	connect(ui.action_about, SIGNAL(triggered()), this, SLOT(ShowAbout()));
 	connect(ui.action_help, SIGNAL(triggered()), this, SLOT(ShowHelp()));
@@ -62,7 +61,7 @@ void segment::ShowHelp() {
 	QMessageBox box;
 	box.setIcon(QMessageBox::Information);
 	box.setWindowTitle(tr(u8"使用帮助"));
-	box.setText(tr(u8"哈哈哈哈行aah"));
+	box.setText(tr(u8"作者暂时不想写帮助，自己琢磨琢磨吧"));
 	box.addButton(tr(u8"确定"), QMessageBox::AcceptRole);
 	box.exec();
 }
@@ -275,18 +274,6 @@ void segment::SetFileEncode() {
 	else return;
 }
 
-void segment::SetOutputEncode() {
-	if (ui.comboBox_10->currentText() == tr("UCS2_LE")) {
-		this->out_encode = UCS2_LE;
-		ui.label_output->setText(tr("UCS2_LE"));
-	}
-	else if (ui.comboBox_10->currentText() == tr("UCS2_BE")) {
-		this->out_encode = UCS2_BE;
-		ui.label_output->setText(tr("UCS2_BE"));
-	} 
-	return;
-}
-
 void segment::Run() {
 	if (ui.lineEdit_Dict->text().isEmpty()) {
 		QMessageBox box;
@@ -325,9 +312,9 @@ void segment::Run() {
 	}
  	QFile fileIn(ui.lineEdit_Input->text());
 	wchar_t *ws = NULL;
-	FILE *dictfile = MyFunc::Myfopen(ui.lineEdit_Dict->text().toLatin1().data(), "rb", this->dict_encode);
+	FILE *dictfile = SegCore::Myfopen(ui.lineEdit_Dict->text().toLatin1().data(), "rb", this->dict_encode);
 	int i = 0;
-	while (MyFunc::MyReadLine(dictfile, ws, this->dict_encode) != -1) {
+	while (SegCore::MyReadLine(dictfile, ws, this->dict_encode) != -1) {
 		QString str = QString::fromWCharArray(ws);
 		ui.dict_text->append(str);
 		i++;
@@ -386,7 +373,7 @@ void segment::Add() {
 	}
 	wchar_t *ws = (wchar_t*)malloc(20 * sizeof(wchar_t));
 	ui.add_word->text().toWCharArray(ws);
-	int len = ui.search_word->text().size();
+	int len = ui.add_word->text().size();
 	ws[len] = '\0';
 	info.vacab = Decode::UnicoToVec(ws);
 	free(ws);
@@ -406,16 +393,18 @@ void segment::Add() {
 	box.addButton(tr(u8"修改"), QMessageBox::AcceptRole);
 	box.addButton(tr(u8"不修改"), QMessageBox::RejectRole);
 	int ret = box.exec();
-	ui.add_freq->clear();
-	ui.add_prop->clear();
-	ui.add_word->clear();
 	if (ret == QMessageBox::AcceptRole) {
 		FILE* fp = fopen(ui.lineEdit_Dict->text().toLatin1().data(), "ab");
-		QString info = ui.add_word->text() + " "
+		QString infoStr = ui.add_word->text() + " "
 			+ ui.add_freq->text() + " "
 			+ ui.add_prop->text();
+		int localLen = ui.add_word->text().size();
+		localLen += ui.add_prop->text().size();
+		localLen += ui.add_freq->text().size();
+		localLen += 2;
 		wchar_t *wStr = (wchar_t*)malloc(50 * sizeof(wchar_t));
-		info.toWCharArray(wStr);
+		infoStr.toWCharArray(wStr);
+		wStr[localLen] = '\0';
 		if (this->dict_encode == ANSI) {
 			char *str = Decode::UnicodeToAnsi(wStr);
 			fwrite(str, 1, strlen(str), fp);
@@ -447,6 +436,9 @@ void segment::Add() {
 		}
 		fclose(fp);
 	}
+	ui.add_freq->clear();
+	ui.add_prop->clear();
+	ui.add_word->clear();
 }
 
 void segment::Del() {
@@ -502,10 +494,10 @@ void segment::DisplayDict() {
 		segment::BrowseDict();
 	}
 	wchar_t *ws = NULL;
-	FILE *dictfile = MyFunc::Myfopen(ui.lineEdit_Dict->text().toLatin1().data(), "rb", this->dict_encode);
+	FILE *dictfile = SegCore::Myfopen(ui.lineEdit_Dict->text().toLatin1().data(), "rb", this->dict_encode);
 	if (!dictfile) return;
 	int i = 0;
-	while (MyFunc::MyReadLine(dictfile, ws, this->dict_encode) != -1) {
+	while (SegCore::MyReadLine(dictfile, ws, this->dict_encode) != -1) {
 		QString str = QString::fromWCharArray(ws);
 		ui.dict_text->append(str);
 		i++;
@@ -535,12 +527,14 @@ void segment::LoadDict() {
 
 void segment::RunTest() {
 	wchar_t ws[20480];
-	QString str = ui.textEdit_input->toPlainText();
-	str.toWCharArray(ws);
+	QString tmpStr = ui.textEdit_input->toPlainText();
+	tmpStr.toWCharArray(ws);
 	vector<wchar_t> puncs;
-	vector<vector<word>> wsList = MyFunc::MySplit(ws, puncs);
+	vector<vector<word>> wsList = SegCore::MySplit(ws, puncs);
 	for (unsigned i = 0; i < wsList.size();i++) {
-		ui.textEdit_out->append(CutTest(wsList[i]));
+		SegCore::Seg(wsList[i], this->dict, ws);
+		tmpStr = QString::fromWCharArray(ws);
+		ui.textEdit_out->append(tmpStr);
 	}
 }
 
@@ -551,32 +545,43 @@ void segment::ClearText() {
 
 //
 void segment::ReadFile() {
-	FILE *Infile = MyFunc::Myfopen(ui.lineEdit_Input->text().toLatin1().data(), "rb", this->in_encode);
-	FILE *Outfile = MyFunc::Myfopen(ui.lineEdit_Output->text().toLatin1().data(), "wb", this->out_encode);
-	wchar_t* line = NULL;
+	FILE *Infile = SegCore::Myfopen(ui.lineEdit_Input->text().toLatin1().data(), "rb", this->in_encode);
+	FILE *Outfile = SegCore::Myfopen(ui.lineEdit_Output->text().toLatin1().data(), "wb", UCS2_LE);
+	wchar_t *line = NULL, ws[1024];
 	char tmpStr[5];
 	vector<wchar_t> puncs;
 	vector<word> tmpWs;
 	tmpWs.clear();
-	while (MyFunc::MyReadLine(Infile, line, this->in_encode) != -1) {
-		vector<vector<word>> wsList = MyFunc::MySplit(line, puncs);
+	while (SegCore::MyReadLine(Infile, line, this->in_encode) != -1) {
+		vector<vector<word>> wsList = SegCore::MySplit(line, puncs);
 		if (wsList.size() > 0) {
 			if (!tmpWs.empty())
 				wsList[0].insert(wsList[0].begin(), tmpWs.begin(), tmpWs.end());
 			if (puncs.size() < wsList.size()) {
 				for (unsigned i = 0; i < wsList.size() - 1; i++) {
-					segment::Cut(wsList[i], Outfile);
+					//segment::Cut(wsList[i], Outfile);
+					SegCore::Seg(wsList[i], this->dict, ws);
+					fwrite(ws, 2, wcslen(ws), Outfile);
 					tmpStr[0] = (char)(puncs[i] & 0x00ff);
 					tmpStr[1] = (char)((puncs[i] >> 8) & 0x00ff);
+					fwrite(tmpStr, 1, 2, Outfile);
+					tmpStr[0] = 0x0a; tmpStr[1] = 0;
+					fwrite(tmpStr, 1, 2, Outfile);
+					tmpStr[0] = 0x0d; tmpStr[1] = 0;
 					fwrite(tmpStr, 1, 2, Outfile);
 				}
 				tmpWs = wsList[wsList.size() - 1];
 			}
 			else {
 				for (unsigned i = 0; i < wsList.size() - 1; i++) {
-					segment::Cut(wsList[i], Outfile);
+					SegCore::Seg(wsList[i], this->dict, ws);
+					fwrite(ws, 2, wcslen(ws), Outfile);
 					tmpStr[0] = (char)(puncs[i] & 0x00ff);
 					tmpStr[1] = (char)((puncs[i] >> 8) & 0x00ff);
+					fwrite(tmpStr, 1, 2, Outfile);
+					tmpStr[0] = 0x0a; tmpStr[1] = 0;
+					fwrite(tmpStr, 1, 2, Outfile);
+					tmpStr[0] = 0x0d; tmpStr[1] = 0;
 					fwrite(tmpStr, 1, 2, Outfile);
 				}
 				tmpWs.clear();
@@ -590,342 +595,4 @@ void segment::ReadFile() {
 	fclose(Infile);
 	fclose(Outfile);
 	return;
-}
-
-void segment::Cut(vector<word> sentence, FILE* Outfile) {
-	unsigned i, j , k, p, q, next, current, n = 0;
-	unsigned maxlen = 0, numb =3;
-	char tmpStr[5];
-	vector<vector<DAGInfo>> dag;
-	unsigned routs[1024][3];
-	unsigned rout[3];
-	dag.clear();
-	dag = this->dict->tree.SearchDAG(sentence);
-	//i是第i个字
-	for (i = 0; i < dag.size(); ) {
-		n = 0; maxlen = 0; numb = 3;
-		//j用于遍历i所有能组成的词
-		for (j = 0; j < dag[i].size(); j++) { //进行第一条规则筛选
-			memset(rout, 0, 3 * sizeof(unsigned));
-			rout[0] = dag[i][j].pos - i + 1;
-			current = next = dag[i][j].pos + 1;
-			if(current <dag.size())
-				for (k = 0; k < dag[current].size(); k++) {
-					rout[1] = rout[2] = 0;
-					rout[1] = dag[current][k].pos - current + 1;
-					next = dag[current][k].pos + 1;
-					if (next < dag.size())
-						rout[2] = dag[next][dag[next].size() - 1].pos - next + 1;
-					if (maxlen <= rout[0] + rout[1] + rout[2]) {
-						if (maxlen<rout[0] + rout[1] + rout[2])
-							n = 0;
-						maxlen = rout[0] + rout[1] + rout[2];
-						routs[n][0] = rout[0];
-						routs[n][1] = rout[1];
-						routs[n][2] = rout[2];
-						n++;
-					}
-				}
-			else {
-				if (maxlen <= rout[0] + rout[1] + rout[2]) {
-					if (maxlen<rout[0] + rout[1] + rout[2])
-						n = 0;
-					maxlen = rout[0] + rout[1] + rout[2];
-					routs[n][0] = rout[0];
-					routs[n][1] = rout[1];
-					routs[n][2] = rout[2];
-					n++;
-				}
-			}
-		}
-		if (n == 1)
-			goto CONTINUE;
-		else {
-			numb = 3;
-			for (p = 0, q = 0; p < n; p++) {//进行第二条规则筛选
-				if (routs[p][2] && routs[p][1] && routs[p][0]) {
-					if (numb == 3) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				else if (!routs[p][2] && routs[p][1] && routs[p][0]) {
-					if (numb > 2) {
-						numb = 2; q = 0;
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-					else if (numb = 2) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				else if (!routs[p][2] && !routs[p][1] && routs[p][0]) {
-					if (numb > 1) {
-						numb = 1; q = 0;
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-					else if (numb = 1) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				assert(!(!routs[p][2] && !routs[p][1] && !routs[p][0]));
-			}
-			n = q;
-		}
-		if (n == 1)
-			goto CONTINUE;
-		else { ////进行第三条规则筛选
-			double average = (double)maxlen / numb;
-			double variance = 100, tmp = 0;
-			for (p = 0, q = 0; p < n; p++) {
-				tmp = (routs[p][0] - average)*(routs[p][0] - average)
-					+ (routs[p][1] - average)*(routs[p][1] - average)
-					+ (routs[p][2] - average)*(routs[p][2] - average);
-				if (tmp < variance) {
-					variance = tmp;
-					q = 0;
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-				else if (tmp == variance) {
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-			}
-			n = q;
-		}
-		if (n == 1) 
-			goto CONTINUE;
-		else { ////进行第四条规则筛选
-			double mp = 0, tmpMp = 0;
-			for (p = 0, q = 0; p < n; p++) {
-				tmpMp = 0;
-				if (routs[p][0] == 1)
-					tmpMp += log(dag[i][0].freq);
-				if (routs[p][1] == 1)
-					tmpMp += log(dag[i + routs[p][0]][0].freq);
-				if (routs[p][2] == 1)
-					tmpMp += log(dag[i + routs[p][0] + routs[p][1]][0].freq);
-				//
-				if (tmpMp > mp) {
-					mp = tmpMp;
-					q = 0;
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-				else if (tmpMp == mp) {
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-			}
-			n = q;
-		}
-	CONTINUE:
-		if (this->out_encode == UCS2_LE) {
-			for (p = 0; p < routs[0][0]; p++) {
-				tmpStr[0] = (char)(sentence[i] & 0x00ff);
-				tmpStr[1] = (char)((sentence[i] >> 8) & 0x00ff);
-				fwrite(tmpStr, 1, 2, Outfile);
-				i++;
-			}
-			tmpStr[0] = 0x2f;
-			tmpStr[1] = 0;
-			fwrite(tmpStr, 1, 2, Outfile);
-		}
-		else {
-			for (p = 0; p < routs[0][0]; p++) {
-				tmpStr[1] = (char)(sentence[i] & 0x00ff);
-				tmpStr[0] = (char)((sentence[i] >> 8) & 0x00ff);
-				fwrite(tmpStr, 1, 2, Outfile);
-				i++;
-			}
-			tmpStr[1] = 0x2f;
-			tmpStr[0] = 0;
-			fwrite(tmpStr, 1, 2, Outfile);
-		}
-	}
-}
-
-QString segment::CutTest(vector<word> sentence) {
-	unsigned i, j, k, p, q, next, current, n = 0;
-	unsigned maxlen = 0, numb = 3;
-	int count = 0;
-	char tmpStr[5];
-	wchar_t tmpWS[1024];
-	vector<vector<DAGInfo>> dag;
-	unsigned routs[1024][3];
-	unsigned rout[3];
-	dag.clear();
-	dag = this->dict->tree.SearchDAG(sentence);
-	//i是第i个字
-	for (i = 0; i < dag.size(); ) {
-		n = 0; maxlen = 0; numb = 3;
-		//j用于遍历i所有能组成的词
-		for (j = 0; j < dag[i].size(); j++) { //进行第一条规则筛选
-			memset(rout, 0, 3 * sizeof(unsigned));
-			rout[0] = dag[i][j].pos - i + 1;
-			current = next = dag[i][j].pos + 1;
-			if (current <dag.size())
-				for (k = 0; k < dag[current].size(); k++) {
-					rout[1] = rout[2] = 0;
-					rout[1] = dag[current][k].pos - current + 1;
-					next = dag[current][k].pos + 1;
-					if (next < dag.size())
-						rout[2] = dag[next][dag[next].size() - 1].pos - next + 1;
-					if (maxlen <= rout[0] + rout[1] + rout[2]) {
-						if (maxlen<rout[0] + rout[1] + rout[2])
-							n = 0;
-						maxlen = rout[0] + rout[1] + rout[2];
-						routs[n][0] = rout[0];
-						routs[n][1] = rout[1];
-						routs[n][2] = rout[2];
-						n++;
-					}
-				}
-			else {
-				if (maxlen <= rout[0] + rout[1] + rout[2]) {
-					if (maxlen<rout[0] + rout[1] + rout[2])
-						n = 0;
-					maxlen = rout[0] + rout[1] + rout[2];
-					routs[n][0] = rout[0];
-					routs[n][1] = rout[1];
-					routs[n][2] = rout[2];
-					n++;
-				}
-			}
-		}
-		if (n == 1)
-			goto CONTINUE;
-		else {
-			numb = 3;
-			for (p = 0, q = 0; p < n; p++) {//进行第二条规则筛选
-				if (routs[p][2] && routs[p][1] && routs[p][0]) {
-					if (numb == 3) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				else if (!routs[p][2] && routs[p][1] && routs[p][0]) {
-					if (numb > 2) {
-						numb = 2; q = 0;
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-					else if (numb = 2) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				else if (!routs[p][2] && !routs[p][1] && routs[p][0]) {
-					if (numb > 1) {
-						numb = 1; q = 0;
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-					else if (numb = 1) {
-						routs[q][0] = routs[p][0];
-						routs[q][1] = routs[p][1];
-						routs[q][2] = routs[p][2];
-						q++;
-					}
-				}
-				assert(!(!routs[p][2] && !routs[p][1] && !routs[p][0]));
-			}
-			n = q;
-		}
-		if (n == 1)
-			goto CONTINUE;
-		else { ////进行第三条规则筛选
-			double average = (double)maxlen / numb;
-			double variance = 100, tmp = 0;
-			for (p = 0, q = 0; p < n; p++) {
-				tmp = (routs[p][0] - average)*(routs[p][0] - average)
-					+ (routs[p][1] - average)*(routs[p][1] - average)
-					+ (routs[p][2] - average)*(routs[p][2] - average);
-				if (tmp < variance) {
-					variance = tmp;
-					q = 0;
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-				else if (tmp == variance) {
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-			}
-			n = q;
-		}
-		if (n == 1)
-			goto CONTINUE;
-		else { ////进行第四条规则筛选
-			double mp = 0, tmpMp = 0;
-			for (p = 0, q = 0; p < n; p++) {
-				tmpMp = 0;
-				if (routs[p][0] == 1)
-					tmpMp += log(dag[i][0].freq);
-				if (routs[p][1] == 1)
-					tmpMp += log(dag[i + routs[p][0]][0].freq);
-				if (routs[p][2] == 1)
-					tmpMp += log(dag[i + routs[p][0] + routs[p][1]][0].freq);
-				//
-				if (tmpMp > mp) {
-					mp = tmpMp;
-					q = 0;
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-				else if (tmpMp == mp) {
-					routs[q][0] = routs[p][0];
-					routs[q][1] = routs[p][1];
-					routs[q][2] = routs[p][2];
-					q++;
-				}
-			}
-			n = q;
-		}
-	CONTINUE:
-		for (p = 0; p < routs[0][0]; p++) {
-			tmpWS[count++] = sentence[i++];
-		}
-		tmpWS[count++] = '/';
-	}
-	tmpWS[count++] = '\n';
-	tmpWS[count] = '\0';
-	QString str = QString::fromWCharArray(tmpWS);
-	return str;
 }

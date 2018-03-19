@@ -76,8 +76,6 @@ public:
     QPushButton *OutBrowser;
     QHBoxLayout *horizontalLayout_20;
     QSpacerItem *horizontalSpacer_21;
-    QLabel *label_34;
-    QComboBox *comboBox_10;
     QSpacerItem *horizontalSpacer_22;
     QLabel *label_35;
     QLabel *label_output;
@@ -163,7 +161,7 @@ public:
     {
         if (segmentClass->objectName().isEmpty())
             segmentClass->setObjectName(QStringLiteral("segmentClass"));
-        segmentClass->resize(649, 485);
+        segmentClass->resize(649, 509);
         action_help = new QAction(segmentClass);
         action_help->setObjectName(QStringLiteral("action_help"));
         action_about = new QAction(segmentClass);
@@ -199,7 +197,7 @@ public:
         groupBox->setGeometry(QRect(20, 10, 581, 91));
         layoutWidget = new QWidget(groupBox);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(20, 20, 541, 66));
+        layoutWidget->setGeometry(QRect(20, 20, 541, 77));
         verticalLayout_3 = new QVBoxLayout(layoutWidget);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -271,7 +269,7 @@ public:
         groupBox_3->setGeometry(QRect(20, 220, 581, 91));
         layoutWidget_2 = new QWidget(groupBox_3);
         layoutWidget_2->setObjectName(QStringLiteral("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(20, 20, 541, 66));
+        layoutWidget_2->setGeometry(QRect(20, 20, 541, 77));
         verticalLayout_9 = new QVBoxLayout(layoutWidget_2);
         verticalLayout_9->setSpacing(6);
         verticalLayout_9->setContentsMargins(11, 11, 11, 11);
@@ -306,17 +304,6 @@ public:
 
         horizontalLayout_20->addItem(horizontalSpacer_21);
 
-        label_34 = new QLabel(layoutWidget_2);
-        label_34->setObjectName(QStringLiteral("label_34"));
-
-        horizontalLayout_20->addWidget(label_34);
-
-        comboBox_10 = new QComboBox(layoutWidget_2);
-        comboBox_10->setObjectName(QStringLiteral("comboBox_10"));
-        comboBox_10->setStyleSheet(QStringLiteral("font: 10pt \"Times New Roman\";"));
-
-        horizontalLayout_20->addWidget(comboBox_10);
-
         horizontalSpacer_22 = new QSpacerItem(58, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_20->addItem(horizontalSpacer_22);
@@ -347,7 +334,7 @@ public:
         groupBox_2->setGeometry(QRect(20, 110, 581, 101));
         layoutWidget_4 = new QWidget(groupBox_2);
         layoutWidget_4->setObjectName(QStringLiteral("layoutWidget_4"));
-        layoutWidget_4->setGeometry(QRect(20, 20, 541, 66));
+        layoutWidget_4->setGeometry(QRect(20, 20, 541, 77));
         verticalLayout_8 = new QVBoxLayout(layoutWidget_4);
         verticalLayout_8->setSpacing(6);
         verticalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -535,7 +522,7 @@ public:
 "color: rgb(0, 0, 255);"));
         layoutWidget1 = new QWidget(groupBox_4);
         layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(70, 40, 175, 28));
+        layoutWidget1->setGeometry(QRect(70, 40, 206, 28));
         horizontalLayout = new QHBoxLayout(layoutWidget1);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -608,7 +595,7 @@ public:
         segmentClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(segmentClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 649, 23));
+        menuBar->setGeometry(QRect(0, 0, 649, 30));
         menu_F = new QMenu(menuBar);
         menu_F->setObjectName(QStringLiteral("menu_F"));
         menu_H = new QMenu(menuBar);
@@ -641,7 +628,7 @@ public:
 
         retranslateUi(segmentClass);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(segmentClass);
@@ -678,13 +665,7 @@ public:
         groupBox_3->setTitle(QApplication::translate("segmentClass", "\350\276\223\345\205\245\346\226\207\344\273\266", Q_NULLPTR));
         label_33->setText(QApplication::translate("segmentClass", "\350\276\223\345\207\272\346\226\207\344\273\266\357\274\232", Q_NULLPTR));
         OutBrowser->setText(QApplication::translate("segmentClass", "\346\265\217\350\247\210", Q_NULLPTR));
-        label_34->setText(QApplication::translate("segmentClass", "\351\200\211\346\213\251\347\274\226\347\240\201\346\226\271\345\274\217\357\274\232", Q_NULLPTR));
-        comboBox_10->clear();
-        comboBox_10->insertItems(0, QStringList()
-         << QApplication::translate("segmentClass", "UCS2_LE", Q_NULLPTR)
-         << QApplication::translate("segmentClass", "UCS2_BE", Q_NULLPTR)
-        );
-        label_35->setText(QApplication::translate("segmentClass", "\345\275\223\345\211\215\350\247\243\347\240\201\346\226\271\345\274\217\357\274\232", Q_NULLPTR));
+        label_35->setText(QApplication::translate("segmentClass", "\347\274\226\347\240\201\346\226\271\345\274\217\357\274\232", Q_NULLPTR));
         label_output->setText(QApplication::translate("segmentClass", "UCS2_LE", Q_NULLPTR));
         pushButton_10->setText(QApplication::translate("segmentClass", "\345\274\200\345\247\213\345\210\207\345\210\206", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("segmentClass", "\350\276\223\345\205\245\346\226\207\344\273\266", Q_NULLPTR));

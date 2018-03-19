@@ -23,7 +23,6 @@ bool Dict::SetDictPath(char *dictPath) {
 	if (dictPath == NULL) return false; //如果路径字符串为空，则返回false
 	else {
 		this->dictPath = dictPath;
-		//this->dictEncode = Decode::CheckEncode((char*)(this->dictPath).c_str());
 		return true;
 	}
 }
