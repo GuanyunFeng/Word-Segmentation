@@ -1,3 +1,4 @@
+#pragma once
 #include "segment.h"
 
 segment::segment(QWidget *parent)
@@ -9,7 +10,6 @@ segment::segment(QWidget *parent)
 	ui.lineEdit_Output->setReadOnly(true);
 	ui.textEdit_out->setReadOnly(true);
 	ui.dict_text->setReadOnly(true);
-	ui.checkBox_5->setCheckState(Qt::Checked);
 	ui.checkBox_3->setCheckState(Qt::Checked);
 	ui.checkBox->setCheckState(Qt::Checked);
 
@@ -35,6 +35,9 @@ segment::segment(QWidget *parent)
 	connect(ui.pushButton_runTest, SIGNAL(clicked()), this, SLOT(RunTest()));
 	connect(ui.pushButton_cls, SIGNAL(clicked()), this, SLOT(ClearText()));
 	connect(ui.comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(SetDict()));
+	connect(ui.radioButton, SIGNAL(clicked()), this, SLOT(SetMM()));
+	connect(ui.radioButton_2, SIGNAL(clicked()), this, SLOT(SetMP()));
+	connect(ui.radioButton_3, SIGNAL(clicked()), this, SLOT(SetMax()));
 	this->dict = new Dict();
 	char* curDirectory = (char*)malloc(80 * sizeof(char));
 	curDirectory = _getcwd(curDirectory, 80 * sizeof(char));
@@ -62,7 +65,7 @@ void segment::ShowHelp() {
 	QMessageBox box;
 	box.setIcon(QMessageBox::Information);
 	box.setWindowTitle(tr(u8"使用帮助"));
-	box.setText(tr(u8"作者暂时不想写帮助，自己琢磨琢磨吧"));
+	box.setText(tr(u8"抱歉暂时没有使用帮助哦!"));
 	box.addButton(tr(u8"确定"), QMessageBox::AcceptRole);
 	box.exec();
 }
@@ -535,7 +538,12 @@ void segment::RunTest() {
 	vector<wchar_t> puncs;
 	vector<vector<unsigned short>> wsList = SegCore::MySplit(ws, puncs);
 	for (unsigned i = 0; i < wsList.size();i++) {
-		SegCore::MMSeg(wsList[i], this->dict, ws);
+		if(this->SegMode == 0)
+			SegCore::MMSeg(wsList[i], this->dict, ws);
+		else if(this->SegMode ==1)
+			SegCore::MPSeg(wsList[i], this->dict, ws);
+		else
+			SegCore::MaxSeg(wsList[i], this->dict, ws);
 		tmpStr = QString::fromWCharArray(ws);
 		ui.textEdit_out->append(tmpStr);
 	}

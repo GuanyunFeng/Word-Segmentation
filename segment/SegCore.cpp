@@ -174,26 +174,26 @@ void SegCore::MPSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
 	vector<vector<DAGInfo>> dag;
 	dag.clear();
 	dag = dict->tree.SearchDAG(sentence);
-	vector<int> rout = SegCore::CalcPoss(dag, 0).rout;
-	for (unsigned i = rout.size() - 1; i >= 0; i--) {
-		for (int j = 0; j < rout[i]; j++)
+	vector<int> rout = SegCore::CalcPoss(dag, 0, dict->GetTotal()).rout;
+	for (int i = rout.size() - 1; i >= 0; i--) {
+		while(sCount <= rout[i])
 			ws[count++] = sentence[sCount++];
 		ws[count++] = '/';
 		ws[count] = '\0';
 	}
 }
 
-MPRout SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i) {
+MPRout SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i, unsigned long total) {
 	MPRout r, tmp;
-	r.possi = 0; r.rout.clear();
+	r.possi = -65533; r.rout.clear();
 	if (i == dag.size() - 1) {
-		r.possi = log(dag[i][0].freq);
+		r.possi = log((double)dag[i][0].freq/total);
 		r.rout.push_back(i);
 	}
 	else {
 		for (int j = 0; j < dag[i].size(); j++) {
 			if (dag[i][j].pos == dag.size() - 1) {
-				tmp.possi = log(dag[i][j].freq);
+				tmp.possi = log((double)dag[i][j].freq / total);
 				if (tmp.possi > r.possi) {
 					r.possi = tmp.possi;
 					r.rout.clear();
@@ -201,8 +201,8 @@ MPRout SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i) {
 				}
 			}
 			else {
-				tmp = CalcPoss(dag, dag[i][j].pos + 1);
-				tmp.possi += log(dag[i][j].freq);
+				tmp = CalcPoss(dag, dag[i][j].pos + 1, total);
+				tmp.possi += log((double)dag[i][j].freq / total);
 				if (tmp.possi > r.possi) {
 					r.possi = tmp.possi;
 					r.rout.clear();
@@ -383,7 +383,7 @@ vector<vector<unsigned short>> SegCore::MySplit(wchar_t *wstr, vector<wchar_t> &
 				|| wstr[i + j] == (unsigned short)0x01)
 			{
 				tmpWStr[j] = '\0';
-				if (wstr[i + j] == (unsigned short)0x01) flag = 1;
+				if (wstr[i + j] == (unsigned short)0x01) flag = 1; //qt文本框里的缓冲字符，不知道为什么会出现，跳过。
 				if (wcslen(tmpWStr)) {
 					wsList.push_back(Decode::UnicoToVec(tmpWStr));
 					puncList.push_back(wstr[i + j]);

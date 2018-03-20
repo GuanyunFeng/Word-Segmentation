@@ -27,6 +27,7 @@ public:
 	void SetUnloaded() { this->loaded = false; }
 	static vector<unsigned short> ToUnicode(string str, Encode encoding);
 	static string ToString(vector<unsigned short> vacab, Encode encoding);
+	unsigned long GetTotal() { return this->total; }
 	Encode dictEncode = UNKNOWN;
 
 	Trie tree;

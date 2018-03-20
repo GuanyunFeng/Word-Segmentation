@@ -47,10 +47,21 @@ public:
 	//
 	void RunTest();
 	void ClearText();
+	//
+	void SetMM() { 
+		this->SegMode = 0;
+	}
+	void SetMP() {
+		this->SegMode = 1;
+	}
+	void SetMax() {
+		this->SegMode = 2;
+	}
 	
 private:
 	Ui::segmentClass ui;
 	Dict *dict;
 	Encode dict_encode = UNKNOWN;
 	Encode in_encode = UNKNOWN;
+	int SegMode = 0;
 };

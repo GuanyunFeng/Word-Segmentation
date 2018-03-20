@@ -25,6 +25,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -68,7 +69,7 @@ public:
     QLabel *label_dict;
     QSpacerItem *horizontalSpacer_5;
     QGroupBox *groupBox_3;
-    QWidget *widget;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_19;
     QLabel *label_33;
@@ -134,15 +135,15 @@ public:
     QGroupBox *groupBox_4;
     QCheckBox *checkBox;
     QLabel *label_4;
-    QWidget *layoutWidget1;
+    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout;
     QLabel *label_5;
     QComboBox *comboBox_3;
     QGroupBox *groupBox_5;
     QLabel *label_6;
-    QCheckBox *checkBox_5;
-    QCheckBox *checkBox_6;
-    QCheckBox *checkBox_7;
+    QRadioButton *radioButton;
+    QRadioButton *radioButton_2;
+    QRadioButton *radioButton_3;
     QGroupBox *groupBox_6;
     QLabel *label_7;
     QCheckBox *checkBox_2;
@@ -268,10 +269,10 @@ public:
         groupBox_3 = new QGroupBox(tab);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setGeometry(QRect(20, 220, 581, 91));
-        widget = new QWidget(groupBox_3);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(21, 21, 541, 55));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget1 = new QWidget(groupBox_3);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(21, 21, 541, 55));
+        verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -279,18 +280,18 @@ public:
         horizontalLayout_19 = new QHBoxLayout();
         horizontalLayout_19->setSpacing(6);
         horizontalLayout_19->setObjectName(QStringLiteral("horizontalLayout_19"));
-        label_33 = new QLabel(widget);
+        label_33 = new QLabel(layoutWidget1);
         label_33->setObjectName(QStringLiteral("label_33"));
         label_33->setStyleSheet(QString::fromUtf8("font: 25 12pt \"Adobe \345\256\213\344\275\223 Std L\";"));
 
         horizontalLayout_19->addWidget(label_33);
 
-        lineEdit_Output = new QLineEdit(widget);
+        lineEdit_Output = new QLineEdit(layoutWidget1);
         lineEdit_Output->setObjectName(QStringLiteral("lineEdit_Output"));
 
         horizontalLayout_19->addWidget(lineEdit_Output);
 
-        OutBrowser = new QPushButton(widget);
+        OutBrowser = new QPushButton(layoutWidget1);
         OutBrowser->setObjectName(QStringLiteral("OutBrowser"));
 
         horizontalLayout_19->addWidget(OutBrowser);
@@ -313,12 +314,12 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer_22);
 
-        label_35 = new QLabel(widget);
+        label_35 = new QLabel(layoutWidget1);
         label_35->setObjectName(QStringLiteral("label_35"));
 
         horizontalLayout_2->addWidget(label_35);
 
-        label_output = new QLabel(widget);
+        label_output = new QLabel(layoutWidget1);
         label_output->setObjectName(QStringLiteral("label_output"));
 
         horizontalLayout_2->addWidget(label_output);
@@ -525,21 +526,21 @@ public:
         label_4->setStyleSheet(QString::fromUtf8("font: 25 10pt \"Adobe \345\256\213\344\275\223 Std L\";\n"
 "text-decoration: underline;\n"
 "color: rgb(0, 0, 255);"));
-        layoutWidget1 = new QWidget(groupBox_4);
-        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(70, 40, 206, 28));
-        horizontalLayout = new QHBoxLayout(layoutWidget1);
+        layoutWidget2 = new QWidget(groupBox_4);
+        layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(70, 40, 206, 28));
+        horizontalLayout = new QHBoxLayout(layoutWidget2);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label_5 = new QLabel(layoutWidget1);
+        label_5 = new QLabel(layoutWidget2);
         label_5->setObjectName(QStringLiteral("label_5"));
         label_5->setStyleSheet(QString::fromUtf8("font: 25 10pt \"Adobe \345\256\213\344\275\223 Std L\";"));
 
         horizontalLayout->addWidget(label_5);
 
-        comboBox_3 = new QComboBox(layoutWidget1);
+        comboBox_3 = new QComboBox(layoutWidget2);
         comboBox_3->setObjectName(QStringLiteral("comboBox_3"));
         comboBox_3->setStyleSheet(QString::fromUtf8("font: 25 10pt \"Adobe \345\256\213\344\275\223 Std L\";"));
 
@@ -554,15 +555,16 @@ public:
         label_6->setStyleSheet(QString::fromUtf8("font: 25 10pt \"Adobe \345\256\213\344\275\223 Std L\";\n"
 "text-decoration: underline;\n"
 "color: rgb(0, 0, 255);"));
-        checkBox_5 = new QCheckBox(groupBox_5);
-        checkBox_5->setObjectName(QStringLiteral("checkBox_5"));
-        checkBox_5->setGeometry(QRect(50, 20, 141, 19));
-        checkBox_6 = new QCheckBox(groupBox_5);
-        checkBox_6->setObjectName(QStringLiteral("checkBox_6"));
-        checkBox_6->setGeometry(QRect(50, 40, 131, 19));
-        checkBox_7 = new QCheckBox(groupBox_5);
-        checkBox_7->setObjectName(QStringLiteral("checkBox_7"));
-        checkBox_7->setGeometry(QRect(50, 60, 131, 19));
+        radioButton = new QRadioButton(groupBox_5);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+        radioButton->setGeometry(QRect(50, 20, 111, 16));
+        radioButton->setChecked(true);
+        radioButton_2 = new QRadioButton(groupBox_5);
+        radioButton_2->setObjectName(QStringLiteral("radioButton_2"));
+        radioButton_2->setGeometry(QRect(50, 40, 121, 16));
+        radioButton_3 = new QRadioButton(groupBox_5);
+        radioButton_3->setObjectName(QStringLiteral("radioButton_3"));
+        radioButton_3->setGeometry(QRect(50, 60, 111, 16));
         groupBox_6 = new QGroupBox(tab_2);
         groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
         groupBox_6->setGeometry(QRect(30, 220, 571, 101));
@@ -728,9 +730,9 @@ public:
         );
         groupBox_5->setTitle(QApplication::translate("segmentClass", "\345\210\207\345\210\206\351\200\211\351\241\271\302\267", Q_NULLPTR));
         label_6->setText(QApplication::translate("segmentClass", "\350\277\231\346\230\257\344\273\200\344\271\210\357\274\237", Q_NULLPTR));
-        checkBox_5->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MMSEG\345\210\206\350\257\215", Q_NULLPTR));
-        checkBox_6->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MP\345\210\206\350\257\215", Q_NULLPTR));
-        checkBox_7->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MAX\345\210\206\350\257\215", Q_NULLPTR));
+        radioButton->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MMSEG\345\210\206\350\257\215", Q_NULLPTR));
+        radioButton_2->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MPSEG\345\210\206\350\257\215", Q_NULLPTR));
+        radioButton_3->setText(QApplication::translate("segmentClass", "\344\275\277\347\224\250MAXSEG\345\210\206\350\257\215", Q_NULLPTR));
         groupBox_6->setTitle(QApplication::translate("segmentClass", "\345\205\266\344\273\226\351\200\211\351\241\271", Q_NULLPTR));
         label_7->setText(QApplication::translate("segmentClass", "\350\277\231\346\230\257\344\273\200\344\271\210\357\274\237", Q_NULLPTR));
         checkBox_2->setText(QApplication::translate("segmentClass", "\344\270\215\350\277\233\350\241\214\345\274\271\347\252\227\346\217\220\351\206\222", Q_NULLPTR));

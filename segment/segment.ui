@@ -186,7 +186,7 @@
         <property name="title">
          <string>输入文件</string>
         </property>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>21</x>
@@ -986,43 +986,46 @@ color: rgb(0, 0, 255);</string>
           <string>这是什么？</string>
          </property>
         </widget>
-        <widget class="QCheckBox" name="checkBox_5">
+        <widget class="QRadioButton" name="radioButton">
          <property name="geometry">
           <rect>
            <x>50</x>
            <y>20</y>
-           <width>141</width>
-           <height>19</height>
+           <width>111</width>
+           <height>16</height>
           </rect>
          </property>
          <property name="text">
           <string>使用MMSEG分词</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
-        <widget class="QCheckBox" name="checkBox_6">
+        <widget class="QRadioButton" name="radioButton_2">
          <property name="geometry">
           <rect>
            <x>50</x>
            <y>40</y>
-           <width>131</width>
-           <height>19</height>
+           <width>121</width>
+           <height>16</height>
           </rect>
          </property>
          <property name="text">
-          <string>使用MP分词</string>
+          <string>使用MPSEG分词</string>
          </property>
         </widget>
-        <widget class="QCheckBox" name="checkBox_7">
+        <widget class="QRadioButton" name="radioButton_3">
          <property name="geometry">
           <rect>
            <x>50</x>
            <y>60</y>
-           <width>131</width>
-           <height>19</height>
+           <width>111</width>
+           <height>16</height>
           </rect>
          </property>
          <property name="text">
-          <string>使用MAX分词</string>
+          <string>使用MAXSEG分词</string>
          </property>
         </widget>
        </widget>
