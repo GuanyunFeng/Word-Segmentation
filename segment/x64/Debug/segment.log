@@ -1,17 +1,4 @@
-﻿  Moc'ing segment.h...
-  Uic'ing segment.ui...
-C:\Users\eric\Documents\GitHub\Segment\segment\segment.ui : warning : The name 'layoutWidget' (QWidget) is already in use, defaulting to 'layoutWidget1'.
-  Rcc'ing segment.qrc...
-RCC : warning : No resources in 'C:\Users\eric\Documents\GitHub\Segment\segment\segment.qrc'.
-  
-  Decode.cpp
-  dict.cpp
-  moc_segment.cpp
-  main.cpp
-  SegCore.cpp
+﻿  SegCore.cpp
   segment.cpp
-  Trie.cpp
   正在生成代码...
-c:\users\eric\documents\github\segment\segment\segcore.cpp(299): warning C4715: “SegCore::MyReadLine”: 不是所有的控件路径都返回值
-  qrc_segment.cpp
   segment.vcxproj -> C:\Users\eric\Documents\GitHub\Segment\x64\Debug\segment.exe

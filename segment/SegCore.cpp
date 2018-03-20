@@ -170,25 +170,49 @@ void SegCore::MMSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
 }
 
 void SegCore::MPSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
-	int maxPossi = 0;
+	int count = 0, sCount = 0;
 	vector<vector<DAGInfo>> dag;
-	unsigned rout[1024];
 	dag.clear();
 	dag = dict->tree.SearchDAG(sentence);
-
+	vector<int> rout = SegCore::CalcPoss(dag, 0).rout;
+	for (unsigned i = rout.size() - 1; i >= 0; i--) {
+		for (int j = 0; j < rout[i]; j++)
+			ws[count++] = sentence[sCount++];
+		ws[count++] = '/';
+		ws[count] = '\0';
+	}
 }
 
-double SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i) {
-	if (i == dag.size() - 1) return log(dag[i][0].freq);
+MPRout SegCore::CalcPoss(vector<vector<DAGInfo>> dag, int i) {
+	MPRout r, tmp;
+	r.possi = 0; r.rout.clear();
+	if (i == dag.size() - 1) {
+		r.possi = log(dag[i][0].freq);
+		r.rout.push_back(i);
+	}
 	else {
 		for (int j = 0; j < dag[i].size(); j++) {
-			if (dag[i][j].pos == dag.size() - 1)
-				return log(dag[i][j].freq);
+			if (dag[i][j].pos == dag.size() - 1) {
+				tmp.possi = log(dag[i][j].freq);
+				if (tmp.possi > r.possi) {
+					r.possi = tmp.possi;
+					r.rout.clear();
+					r.rout.push_back(dag[i][j].pos);
+				}
+			}
 			else {
-				return log(dag[i][j].freq + CalcPoss(dag, dag[i][j].pos + 1));
+				tmp = CalcPoss(dag, dag[i][j].pos + 1);
+				tmp.possi += log(dag[i][j].freq);
+				if (tmp.possi > r.possi) {
+					r.possi = tmp.possi;
+					r.rout.clear();
+					r.rout = tmp.rout;
+					r.rout.push_back(dag[i][j].pos);
+				}
 			}
 		}
 	}
+	return r;
 }
 
 void SegCore::MaxSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
@@ -199,9 +223,9 @@ void SegCore::MaxSeg(vector<unsigned short> sentence, Dict *dict, wchar_t *ws) {
 	dag.clear();
 	dag = dict->tree.SearchDAG(sentence);
 	for (i = 0; i < dag.size();) {
-		maxpos = 0;
 		for (j = 0; j < dag[i].size(); j++) {
-			if (dag[i][j].pos - i > maxpos)
+			maxpos = 0;
+			if (dag[i][j].pos > maxpos)
 				maxpos = dag[i][j].pos;
 		}
 		while (i <= maxpos)
@@ -338,11 +362,13 @@ int SegCore::MyReadLine(FILE* fp, wchar_t* &ws, Encode encoding) {
 
 vector<vector<unsigned short>> SegCore::MySplit(wchar_t *wstr, vector<wchar_t> &puncList) {
 	vector<vector<unsigned short>> wsList;
+	int flag = 0; //flag是为了解决QT中读取结尾出乱码的问题。
 	wchar_t tmpWStr[1024];
 	wsList.clear(); puncList.clear();
 	int wslen = wcslen(wstr), i, j;
 	for (i = 0; i < wslen; ) {
 		for (j = 0; i + j < wslen; j++) {
+			flag = 0;
 			if (wstr[i + j] == L'，' || wstr[i + j] == L','
 				|| wstr[i + j] == L'。' || wstr[i + j] == L'.'
 				|| wstr[i + j] == L'“' || wstr[i + j] == L'”'
@@ -350,26 +376,31 @@ vector<vector<unsigned short>> SegCore::MySplit(wchar_t *wstr, vector<wchar_t> &
 				|| wstr[i + j] == L'！' || wstr[i + j] == L'!'
 				|| wstr[i + j] == L'？' || wstr[i + j] == L'?'
 				|| wstr[i + j] == L'—' || wstr[i + j] == L'-'
-				|| wstr[i + j] == L' ' || wstr[i + j] == L'"'
+				|| wstr[i + j] == L'"'  || wstr[i + j] == L' '
 				|| wstr[i + j] == L'；' || wstr[i + j] == L';'
 				|| wstr[i + j] == L'（' || wstr[i + j] == L'）'
-				|| wstr[i + j] == L'(' || wstr[i + j] == L')')
+				|| wstr[i + j] == L'(' || wstr[i + j] == L')'
+				|| wstr[i + j] == (unsigned short)0x01)
 			{
 				tmpWStr[j] = '\0';
-				wsList.push_back(Decode::UnicoToVec(tmpWStr));
-				puncList.push_back(wstr[i + j]);
+				if (wstr[i + j] == (unsigned short)0x01) flag = 1;
+				if (wcslen(tmpWStr)) {
+					wsList.push_back(Decode::UnicoToVec(tmpWStr));
+					puncList.push_back(wstr[i + j]);
+				}
 				memset(tmpWStr, 0, 2 * 1024);
 				break;
 			}
 			else
 				tmpWStr[j] = wstr[i + j];
 		}
-		if (i + j == wslen) {
-			tmpWStr[j] = '\0';
-			wsList.push_back(Decode::UnicoToVec(tmpWStr));
+		if (i + j + flag == wslen) {
+			tmpWStr[j] = '\0'; 
+			if (wcslen(tmpWStr))
+				wsList.push_back(Decode::UnicoToVec(tmpWStr));
 			break;
 		}
-		i += j + 1;
+		i += j + 1 + flag;
 	}
 	return wsList;
 }
