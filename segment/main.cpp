@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	segment w;
 	w.setWindowTitle(u8"GÔÆÖÐÎÄ·Ö´ÊÆ÷ Beta 0.1V");
+	w.setFixedSize(w.width(), w.height());
 	w.show();
 	return a.exec();
 }

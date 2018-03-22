@@ -139,6 +139,12 @@
     <None Include="dict.txt.big" />
     <None Include="dict.txt.small" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="segment.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="1.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

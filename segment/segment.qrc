@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="segment">
+    <qresource prefix="/images">
+        <file>Resources/1.ico</file>
     </qresource>
 </RCC>

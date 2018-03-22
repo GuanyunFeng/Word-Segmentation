@@ -44,6 +44,7 @@ segment::segment(QWidget *parent)
 	strcat(curDirectory, "\\dict");
 	wchar_t *ws = Decode::AnsiToUnicode(curDirectory);
 	ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
+	setWindowIcon(QIcon(":/images/Resources/1.ico"));
 }
 
 
@@ -308,14 +309,7 @@ void segment::Run() {
 		box.exec();
 		segment::SaveFile();
 	}
-	if (!this->dict->IsLoaded()) {
-		this->dict->tree.DeletNode(this->dict->tree.root);
-		this->dict->tree.root = new TrieNode();
-		this->dict->tree.numb = 0;
-		this->dict->SetDictPath(ui.lineEdit_Dict->text().toLatin1().data());
-		this->dict->dictEncode = this->dict_encode;
-		this->dict->LoadDict(dict->dictEncode);
-	}
+	segment::LoadDict();
  	QFile fileIn(ui.lineEdit_Input->text());
 	wchar_t *ws = NULL;
 	FILE *dictfile = SegCore::Myfopen(ui.lineEdit_Dict->text().toLatin1().data(), "rb", this->dict_encode);
@@ -532,6 +526,8 @@ void segment::LoadDict() {
 }
 
 void segment::RunTest() {
+	segment::LoadDict();
+	ui.textEdit_out->clear();
 	wchar_t ws[20480];
 	QString tmpStr = ui.textEdit_input->toPlainText();
 	tmpStr.toWCharArray(ws);
@@ -630,4 +626,22 @@ void segment::SetDict() {
 		wchar_t *ws = Decode::AnsiToUnicode(curDirectory);
 		ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
 	}
+}
+
+
+		{
+			qreal sizef = font.pointSizeF();
+			font.setPointSizeF(sizef* fontscale);
+		}
+		else
+		{
+			font.setPixelSize(fontsize * fontscale * 90 / 72); // 设置字体大小为像素大小，而不是以磅为单位,
+		}
+	}
+	else
+	{
+		font.setPixelSize(fontsize * fontscale);
+	}
+
+	ui.label->setFont(font);
 }
