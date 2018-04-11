@@ -334,7 +334,7 @@ public:
         pushButton_10 = new QPushButton(tab);
         pushButton_10->setObjectName(QStringLiteral("pushButton_10"));
         pushButton_10->setGeometry(QRect(500, 330, 91, 31));
-        pushButton_10->setStyleSheet(QString::fromUtf8("font: 25 12pt \"Adobe \345\256\213\344\275\223 Std L\";"));
+        pushButton_10->setStyleSheet(QStringLiteral(""));
         groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
         groupBox_2->setGeometry(QRect(20, 110, 581, 101));
@@ -635,7 +635,7 @@ public:
 
         retranslateUi(segmentClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(segmentClass);

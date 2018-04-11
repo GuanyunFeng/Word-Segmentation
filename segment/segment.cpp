@@ -627,21 +627,3 @@ void segment::SetDict() {
 		ui.lineEdit_Dict->setText(QString::fromWCharArray(ws));
 	}
 }
-
-
-		{
-			qreal sizef = font.pointSizeF();
-			font.setPointSizeF(sizef* fontscale);
-		}
-		else
-		{
-			font.setPixelSize(fontsize * fontscale * 90 / 72); // 设置字体大小为像素大小，而不是以磅为单位,
-		}
-	}
-	else
-	{
-		font.setPixelSize(fontsize * fontscale);
-	}
-
-	ui.label->setFont(font);
-}
