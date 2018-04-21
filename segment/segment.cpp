@@ -63,12 +63,9 @@ void segment::ShowAbout() {
 }
 
 void segment::ShowHelp() {
-	QMessageBox box;
-	box.setIcon(QMessageBox::Information);
-	box.setWindowTitle(tr(u8"使用帮助"));
-	box.setText(tr(u8"抱歉暂时没有使用帮助哦!"));
-	box.addButton(tr(u8"确定"), QMessageBox::AcceptRole);
-	box.exec();
+	HelpWidget *h = new HelpWidget();
+	h->show();
+	//delete h;
 }
 
 void segment::BrowseFile() {

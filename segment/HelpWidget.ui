@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HelpWidget</class>
+ <widget class="QWidget" name="HelpWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>455</width>
+    <height>365</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>161</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>使用帮助手册</string>
+    </property>
+   </column>
+   <item>
+    <property name="text">
+     <string>编码</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>什么是BOM头</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码方式</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>如何选择编码</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>字典</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>如何选择字典</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>如何自定义字典</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>分词</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>分词算法</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>最大正向匹配</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>最大概率路径</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>MMSEG机械分词</string>
+      </property>
+     </item>
+    </item>
+    <item>
+     <property name="text">
+      <string>如何选择算法</string>
+     </property>
+    </item>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

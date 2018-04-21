@@ -7,6 +7,7 @@
 #include <QTextCodec>
 #include<stdio.h>
 #include<assert.h>
+#include "HelpWidget.h"
 #include "Dict.h"
 #include "SegCore.h"
 #include "Decode.h"

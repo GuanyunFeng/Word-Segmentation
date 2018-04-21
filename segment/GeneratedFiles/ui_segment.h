@@ -602,7 +602,7 @@ public:
         segmentClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(segmentClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 649, 23));
+        menuBar->setGeometry(QRect(0, 0, 649, 21));
         menu_F = new QMenu(menuBar);
         menu_F->setObjectName(QStringLiteral("menu_F"));
         menu_H = new QMenu(menuBar);
@@ -635,7 +635,7 @@ public:
 
         retranslateUi(segmentClass);
 
-        tabWidget->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(segmentClass);
